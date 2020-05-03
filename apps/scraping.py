@@ -21,6 +21,10 @@ def scrape_all():
         "facts": mars_facts(),
         "last_modified": dt.datetime.now()
     }
+    browser.quit()
+
+    return data
+
 
 def mars_news(browser):
     
@@ -151,8 +155,6 @@ def mars_facts():
     
     # Convert dataframe into HTML format, add bootstrap
     return df.to_html()
-
-browser.quit()
 
 
 if __name__ == "__main__":
