@@ -81,6 +81,59 @@ def featured_image(browser):
 
     return (img_url)
 
+# # Challenge
+
+# ## High-resolution images for each of Mars's hemispheres
+
+# Visit URL
+url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
+browser.visit(url)
+
+# Parse the resulting html with soup
+html = browser.html
+soup = bs(html, 'html.parser')
+
+base_url= 'https://astrogeology.usgs.gov'
+
+#Parse out the soup and find all of the links
+description_elem = soup.find_all('div', class_='description')
+
+
+#Add base url to links. 
+links = [base_url + item.a['href'] for item in description_elem]
+
+links
+
+
+# Create dictionary. 
+title_url_list = []
+
+# Parse out each link. 
+for link in links:
+    browser.visit(link)
+    
+    # Parse the resulting html with soup
+    html = browser.html
+    soup = bs(html, 'html.parser')
+    
+    # Get title with get_text function. 
+    title = soup.select_one('h2.title').get_text()
+    
+    # Get img_url 
+    img_elem = soup.select('div.downloads li')
+    
+    img_url, = [item.a['href'] for item in img_elem if item.a.get_text() == 'Sample']
+    
+    
+    # Create a dictionary containing title and image. 
+    title_url_dict = {'title': title, 'img_url': img_url}
+    
+    # Append to list
+    title_url_list.append(title_url_dict)
+    
+print(title_url_list)
+
+
 # # Mars Facts
 
 def mars_facts():
